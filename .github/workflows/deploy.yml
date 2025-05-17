@@ -34,6 +34,6 @@ jobs:
     - name: SAM Deploy
       run: |
         sam deploy --no-confirm-changeset --no-fail-on-empty-changeset \
-          --stack-name my-lambda-stack \
+          --stack-name kkennibstock-fastapi \
           --capabilities CAPABILITY_IAM \
           --region ap-northeast-2
