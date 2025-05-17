@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Fast API on lambda for OTA
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  otaApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./ #app 경로
+      Handler: main.handler #main.py의 Lambda handler
+      Runtime: python3.11      
+      FunctionName: "kkennibstock_fastapi"
+      Timeout: 30
+      MemorySize: 512
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: ApiGateway
+            Path: /{proxy+}
+            Method: ANY
+      Role: arn:aws:iam::307946656924:role/LambdaExcutionRole
+
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+
+Outputs:
+  apiEndpoint:
+    Description: "API Gateway endpoint URL for dev stage"
+    Value: !Sub "<https://$>{ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/dev/"
